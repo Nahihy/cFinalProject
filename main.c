@@ -23,7 +23,7 @@ int main() {
     1
   };
 
-  printf("test brench");
+  printf("test");
 
   Entity entity = createEntity("mario.png", GL_RGBA, &model, EN_USE_COLLISION, 0.0f, 0.0f, 0.5f, 0.5f);
   entityChangeTexColumn(&entity, 1);
