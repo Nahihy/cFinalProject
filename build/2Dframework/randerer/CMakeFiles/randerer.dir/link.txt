@@ -1,0 +1,2 @@
+/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/ar qc libranderer.a CMakeFiles/randerer.dir/src/camera.c.o CMakeFiles/randerer.dir/src/shader.c.o CMakeFiles/randerer.dir/src/window.c.o CMakeFiles/randerer.dir/src/mesh.c.o CMakeFiles/randerer.dir/src/font.c.o CMakeFiles/randerer.dir/src/randerer.c.o CMakeFiles/randerer.dir/src/texture.c.o CMakeFiles/randerer.dir/src/charmap.c.o
+/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/ranlib libranderer.a

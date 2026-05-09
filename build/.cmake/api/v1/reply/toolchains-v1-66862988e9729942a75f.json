@@ -1,0 +1,120 @@
+{
+	"kind" : "toolchains",
+	"toolchains" : 
+	[
+		{
+			"compiler" : 
+			{
+				"id" : "GNU",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"/nix/store/a4f2nkikh30hflw5g8wrhz6rmjh26r5f-glfw-3.4/include",
+						"/nix/store/wznk7qyvi5v6qwd4a673v3f6zx6ngn9i-libglvnd-1.7.0-dev/include",
+						"/nix/store/cr5lim02i1zl0ggx5bxic3r02k09mrkg-compiler-rt-libc-21.1.8-dev/include",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib/gcc/x86_64-unknown-linux-gnu/15.2.0/include",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/include",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib/gcc/x86_64-unknown-linux-gnu/15.2.0/include-fixed",
+						"/nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include"
+					],
+					"linkDirectories" : 
+					[
+						"/nix/store/l6cms9wn13829x2iq0sj5fmn4zz3zarv-clang-tools-21.1.8/lib",
+						"/nix/store/a4f2nkikh30hflw5g8wrhz6rmjh26r5f-glfw-3.4/lib",
+						"/nix/store/1fy4004v7q0xi6c5jrr7ld2dinh22vy7-libglvnd-1.7.0/lib",
+						"/nix/store/jms7zxzm7w1whczwny5m3gkgdjghmi2r-glibc-2.42-51/lib",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib/gcc/x86_64-unknown-linux-gnu/15.2.0",
+						"/nix/store/ab3753m6i7isgvzphlar0a8xb84gl96i-gcc-15.2.0-lib/lib",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"gcc",
+						"gcc_s",
+						"c",
+						"gcc",
+						"gcc_s"
+					]
+				},
+				"path" : "/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/gcc",
+				"version" : "15.2.0"
+			},
+			"language" : "C",
+			"sourceFileExtensions" : 
+			[
+				"c",
+				"m"
+			]
+		},
+		{
+			"compiler" : 
+			{
+				"id" : "GNU",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"/nix/store/a4f2nkikh30hflw5g8wrhz6rmjh26r5f-glfw-3.4/include",
+						"/nix/store/wznk7qyvi5v6qwd4a673v3f6zx6ngn9i-libglvnd-1.7.0-dev/include",
+						"/nix/store/cr5lim02i1zl0ggx5bxic3r02k09mrkg-compiler-rt-libc-21.1.8-dev/include",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/include/c++/15.2.0",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/include/c++/15.2.0/x86_64-unknown-linux-gnu",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/include/c++/15.2.0/backward",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib/gcc/x86_64-unknown-linux-gnu/15.2.0/include",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/include",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib/gcc/x86_64-unknown-linux-gnu/15.2.0/include-fixed",
+						"/nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include"
+					],
+					"linkDirectories" : 
+					[
+						"/nix/store/l6cms9wn13829x2iq0sj5fmn4zz3zarv-clang-tools-21.1.8/lib",
+						"/nix/store/a4f2nkikh30hflw5g8wrhz6rmjh26r5f-glfw-3.4/lib",
+						"/nix/store/1fy4004v7q0xi6c5jrr7ld2dinh22vy7-libglvnd-1.7.0/lib",
+						"/nix/store/jms7zxzm7w1whczwny5m3gkgdjghmi2r-glibc-2.42-51/lib",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib/gcc/x86_64-unknown-linux-gnu/15.2.0",
+						"/nix/store/ab3753m6i7isgvzphlar0a8xb84gl96i-gcc-15.2.0-lib/lib",
+						"/nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"stdc++",
+						"m",
+						"gcc_s",
+						"gcc",
+						"c",
+						"gcc_s",
+						"gcc"
+					]
+				},
+				"path" : "/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/g++",
+				"version" : "15.2.0"
+			},
+			"language" : "CXX",
+			"sourceFileExtensions" : 
+			[
+				"C",
+				"M",
+				"c++",
+				"cc",
+				"cpp",
+				"cxx",
+				"mm",
+				"mpp",
+				"CPP",
+				"ixx",
+				"cppm",
+				"ccm",
+				"cxxm",
+				"c++m"
+			]
+		}
+	],
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}

@@ -1,0 +1,304 @@
+cmake_minimum_required(VERSION 3.14)
+
+
+if(NOT DEFINED EMBED_SHADERS)
+  option(EMBED_SHADERS "Embed shaders into binary at compile time" OFF)
+endif()
+if(NOT DEFINED SHADER_DIR)
+  set(SHADER_DIR "shaders" CACHE STRING "Shader directory")
+endif()
+if(NOT DEFINED SHADER_EXTENSIONS)
+  set(SHADER_EXTENSIONS "glsl" CACHE STRING "Shader file extensions")
+endif()
+
+if(NOT DEFINED EMBED_TEXTURES)
+  option(EMBED_TEXTURES "Embed textures into binary at compile time" OFF)
+endif()
+if(NOT DEFINED TEXTURE_DIR)
+  set(TEXTURE_DIR "textures" CACHE STRING "Texture directory")
+endif()
+if(NOT DEFINED TEXTURE_EXTENSIONS)
+  set(TEXTURE_EXTENSIONS "png;jpg;jpeg" CACHE STRING "Texture file extensions")
+endif()
+
+if(NOT DEFINED EMBED_FONTS)
+  option(EMBED_FONTS "Embed fonts into binary at compile time" OFF)
+endif()
+if(NOT DEFINED FONT_DIR)
+  set(FONT_DIR "fonts" CACHE STRING "Font directory")
+endif()
+if(NOT DEFINED FONT_EXTENSIONS)
+  set(FONT_EXTENSIONS "ttf" CACHE STRING "Texture file extensions")
+endif()
+
+
+add_library(randerer STATIC
+  src/camera.c
+  src/shader.c
+  src/window.c
+  src/mesh.c
+  src/font.c
+  src/randerer.c
+  src/texture.c
+  src/charmap.c
+)
+
+find_package(glfw3 REQUIRED)
+find_package(OpenGL REQUIRED)
+
+set(CGLM_SHARED OFF CACHE BOOL "" FORCE)
+set(CGLM_STATIC ON CACHE BOOL "" FORCE)
+
+add_subdirectory(baseLibs/cglm)
+add_subdirectory(baseLibs/glad)
+add_subdirectory(baseLibs/stb)
+add_subdirectory(baseLibs/freeType)
+
+target_include_directories(randerer PUBLIC include)
+target_link_libraries(randerer PUBLIC glfw glad stb OpenGL::GL cglm m freetype)
+
+target_compile_definitions(randerer PUBLIC
+  SHADER_DIR="shaders"
+  TEXTURE_DIR="textures"
+  FONT_DIR="fonts"
+)
+if(IS_ABSOLUTE "${SHADER_DIR}")
+  set(SHADER_SEARCH_DIR "${SHADER_DIR}")
+else()
+  set(SHADER_SEARCH_DIR "${CMAKE_SOURCE_DIR}/${SHADER_DIR}")
+endif()
+
+# ---- shader embedding ----
+if(EMBED_SHADERS)
+
+  set(GLSL_FILES "")
+  foreach(EXT ${SHADER_EXTENSIONS})
+    file(GLOB_RECURSE TMP "${SHADER_SEARCH_DIR}/*.${EXT}")
+    list(APPEND GLSL_FILES ${TMP})
+  endforeach()
+  list(GET SHADER_EXTENSIONS 0 FIRST_SHADER_EXT)
+  set(GENERATED_SHADER_HEADERS "")
+  message(STATUS "glsl files = " ${GLSL_FILES})
+  foreach(GLSL_FILE ${GLSL_FILES})
+    file(RELATIVE_PATH REL_PATH "${SHADER_SEARCH_DIR}" "${GLSL_FILE}")
+    string(REPLACE ".${FIRST_SHADER_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
+    foreach(EXT ${SHADER_EXTENSIONS})
+      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
+    endforeach()
+    set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/embedded_shaders/${OUTPUT_REL}")
+
+    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
+    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
+    string(TOUPPER "${VAR_NAME}" GUARD)
+    string(PREPEND GUARD "SHADER_")
+
+    add_custom_command(
+      OUTPUT "${OUTPUT_FILE}"
+      COMMAND ${CMAKE_COMMAND}
+        -DINPUT_FILE=${GLSL_FILE}
+        -DOUTPUT_FILE=${OUTPUT_FILE}
+        -DVAR_NAME=${VAR_NAME}
+        -DGUARD=${GUARD}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/embed_shader.cmake
+      DEPENDS "${GLSL_FILE}"
+      COMMENT "Embedding shader ${REL_PATH}"
+    )
+    list(APPEND GENERATED_SHADER_HEADERS "${OUTPUT_FILE}")
+  endforeach()
+
+  set(MASTER_SHADER_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_shaders/all_shaders.h")
+  set(MASTER_SHADER_CONTENT "#ifndef SHADER_ALL_SHADERS_H\n#define SHADER_ALL_SHADERS_H\n")
+  set(SHADER_LOOKUP_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_shaders/shader_lookup.h")
+  set(SHADER_LOOKUP_CONTENT "#ifndef SHADER_LOOKUP_H\n#define SHADER_LOOKUP_H\n")
+  string(APPEND SHADER_LOOKUP_CONTENT "#include \"all_shaders.h\"\n#include <string.h>\n\n")
+  string(APPEND SHADER_LOOKUP_CONTENT "static inline const char* lookupShader(const char* path) {\n")
+
+  foreach(GLSL_FILE ${GLSL_FILES})
+    file(RELATIVE_PATH REL_PATH "${SHADER_SEARCH_DIR}" "${GLSL_FILE}")
+    string(REPLACE ".${FIRST_SHADER_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
+    foreach(EXT ${SHADER_EXTENSIONS})
+      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
+    endforeach()
+    string(APPEND MASTER_SHADER_CONTENT "#include \"${OUTPUT_REL}\"\n")
+    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
+    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
+    string(APPEND SHADER_LOOKUP_CONTENT "  if (strcmp(path, \"${REL_PATH}\") == 0) return ${VAR_NAME};\n")
+  endforeach()
+
+  string(APPEND MASTER_SHADER_CONTENT "#endif\n")
+  string(APPEND SHADER_LOOKUP_CONTENT "  return 0;\n}\n#endif\n")
+  file(WRITE "${MASTER_SHADER_HEADER}" "${MASTER_SHADER_CONTENT}")
+  file(WRITE "${SHADER_LOOKUP_HEADER}" "${SHADER_LOOKUP_CONTENT}")
+
+  add_custom_target(randerer_shaders DEPENDS ${GENERATED_SHADER_HEADERS})
+  add_dependencies(randerer randerer_shaders)
+  target_include_directories(randerer PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/embedded_shaders)
+  target_compile_definitions(randerer PRIVATE EMBED_SHADERS)
+else()
+  add_custom_target(copy-shader-dir ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${SHADER_SEARCH_DIR} ${CMAKE_BINARY_DIR}/shaders)
+endif()
+
+if(IS_ABSOLUTE "${TEXTURE_DIR}")
+  set(TEXTURE_SEARCH_DIR "${TEXTURE_DIR}")
+else()
+  set(TEXTURE_SEARCH_DIR "${CMAKE_SOURCE_DIR}/${TEXTURE_DIR}")
+endif()
+
+# ---- texture embedding ----
+if(EMBED_TEXTURES)
+
+  set(TEXTURE_FILES "")
+  foreach(EXT ${TEXTURE_EXTENSIONS})
+    file(GLOB_RECURSE TMP "${TEXTURE_SEARCH_DIR}/*.${EXT}")
+    list(APPEND TEXTURE_FILES ${TMP})
+  endforeach()
+
+  list(GET TEXTURE_EXTENSIONS 0 FIRST_TEXTURE_EXT)
+  set(GENERATED_TEXTURE_HEADERS "")
+
+  foreach(TEXTURE_FILE ${TEXTURE_FILES})
+    file(RELATIVE_PATH REL_PATH "${TEXTURE_SEARCH_DIR}" "${TEXTURE_FILE}")
+    string(REPLACE ".${FIRST_TEXTURE_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
+    foreach(EXT ${TEXTURE_EXTENSIONS})
+      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
+    endforeach()
+    set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/embedded_textures/${OUTPUT_REL}")
+
+    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
+    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
+    string(TOUPPER "${VAR_NAME}" GUARD)
+    string(PREPEND GUARD "TEXTURE_")
+
+    add_custom_command(
+      OUTPUT "${OUTPUT_FILE}"
+      COMMAND ${CMAKE_COMMAND}
+        -DINPUT_FILE=${TEXTURE_FILE}
+        -DOUTPUT_FILE=${OUTPUT_FILE}
+        -DVAR_NAME=${VAR_NAME}
+        -DGUARD=${GUARD}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/embed_file.cmake
+      DEPENDS "${TEXTURE_FILE}"
+      COMMENT "Embedding texture ${REL_PATH}"
+    )
+    list(APPEND GENERATED_TEXTURE_HEADERS "${OUTPUT_FILE}")
+  endforeach()
+
+  set(MASTER_TEXTURE_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_textures/all_textures.h")
+  set(MASTER_TEXTURE_CONTENT "#ifndef TEXTURE_ALL_TEXTURES_H\n#define TEXTURE_ALL_TEXTURES_H\n")
+  set(TEXTURE_LOOKUP_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_textures/texture_lookup.h")
+  set(TEXTURE_LOOKUP_CONTENT "#ifndef TEXTURE_LOOKUP_H\n#define TEXTURE_LOOKUP_H\n")
+  string(APPEND TEXTURE_LOOKUP_CONTENT "#include \"all_textures.h\"\n#include <string.h>\n\n")
+  string(APPEND TEXTURE_LOOKUP_CONTENT "typedef struct { const unsigned char* data; unsigned int len; } TextureData;\n\n")
+  string(APPEND TEXTURE_LOOKUP_CONTENT "static inline TextureData lookupTexture(const char* path) {\n")
+  string(APPEND TEXTURE_LOOKUP_CONTENT "  TextureData empty = {0, 0};\n")
+
+  foreach(TEXTURE_FILE ${TEXTURE_FILES})
+    file(RELATIVE_PATH REL_PATH "${TEXTURE_SEARCH_DIR}" "${TEXTURE_FILE}")
+    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
+    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE ".${FIRST_TEXTURE_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
+    foreach(EXT ${TEXTURE_EXTENSIONS})
+      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
+    endforeach()
+    string(APPEND MASTER_TEXTURE_CONTENT "#include \"${OUTPUT_REL}\"\n")
+    string(APPEND TEXTURE_LOOKUP_CONTENT "  if (strcmp(path, \"${REL_PATH}\") == 0) { TextureData d = {${VAR_NAME}, ${VAR_NAME}_len}; return d; }\n")
+  endforeach()
+
+  string(APPEND MASTER_TEXTURE_CONTENT "#endif\n")
+  string(APPEND TEXTURE_LOOKUP_CONTENT "  return empty;\n}\n#endif\n")
+  file(WRITE "${MASTER_TEXTURE_HEADER}" "${MASTER_TEXTURE_CONTENT}")
+  file(WRITE "${TEXTURE_LOOKUP_HEADER}" "${TEXTURE_LOOKUP_CONTENT}")
+
+  add_custom_target(randerer_textures DEPENDS ${GENERATED_TEXTURE_HEADERS})
+  add_dependencies(randerer randerer_textures)
+  target_include_directories(randerer PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/embedded_textures)
+  target_compile_definitions(randerer PRIVATE EMBED_TEXTURES)
+else()
+  add_custom_target(copy-texture-dir ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${TEXTURE_SEARCH_DIR} ${CMAKE_BINARY_DIR}/textures)
+endif()
+if(IS_ABSOLUTE "${FONT_DIR}")
+  set(FONT_SEARCH_DIR "${FONT_DIR}")
+else()
+  set(FONT_SEARCH_DIR "${CMAKE_SOURCE_DIR}/${FONT_DIR}")
+endif()
+
+# ---- font embedding ----
+if(EMBED_FONTS)
+
+  set(FONT_FILES "")
+  foreach(EXT ${FONT_EXTENSIONS})
+    file(GLOB_RECURSE TMP "${FONT_SEARCH_DIR}/*.${EXT}")
+    list(APPEND FONT_FILES ${TMP})
+  endforeach()
+  list(GET FONT_EXTENSIONS 0 FIRST_FONT_EXT)
+  set(GENERATED_FONT_HEADERS "")
+
+  foreach(FONT_FILE ${FONT_FILES})
+    file(RELATIVE_PATH REL_PATH "${FONT_SEARCH_DIR}" "${FONT_FILE}")
+    string(REPLACE ".${FIRST_FONT_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
+    foreach(EXT ${FONT_EXTENSIONS})
+      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
+    endforeach()
+    set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts/${OUTPUT_REL}")
+
+    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
+    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
+    string(TOUPPER "${VAR_NAME}" GUARD)
+    string(PREPEND GUARD "FONT_")
+
+    add_custom_command(
+      OUTPUT "${OUTPUT_FILE}"
+      COMMAND ${CMAKE_COMMAND}
+        -DINPUT_FILE=${FONT_FILE}
+        -DOUTPUT_FILE=${OUTPUT_FILE}
+        -DVAR_NAME=${VAR_NAME}
+        -DGUARD=${GUARD}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/embed_file.cmake
+      DEPENDS "${FONT_FILE}"
+      COMMENT "Embedding font ${REL_PATH}"
+    )
+    list(APPEND GENERATED_FONT_HEADERS "${OUTPUT_FILE}")
+  endforeach()
+
+  set(MASTER_FONT_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts/all_fonts.h")
+  set(MASTER_FONT_CONTENT "#ifndef FONT_ALL_FONTS_H\n#define FONT_ALL_FONTS_H\n")
+  set(FONT_LOOKUP_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts/font_lookup.h")
+  set(FONT_LOOKUP_CONTENT "#ifndef FONT_LOOKUP_H\n#define FONT_LOOKUP_H\n")
+  string(APPEND FONT_LOOKUP_CONTENT "#include \"all_fonts.h\"\n#include <string.h>\n\n")
+  string(APPEND FONT_LOOKUP_CONTENT "typedef struct { const unsigned char* data; unsigned int len; } FontData;\n\n")
+  string(APPEND FONT_LOOKUP_CONTENT "static inline FontData lookupFont(const char* path) {\n")
+  string(APPEND FONT_LOOKUP_CONTENT "  FontData empty = {0, 0};\n")
+
+  foreach(FONT_FILE ${FONT_FILES})
+    file(RELATIVE_PATH REL_PATH "${FONT_SEARCH_DIR}" "${FONT_FILE}")
+    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
+    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
+    string(REPLACE ".${FIRST_FONT_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
+    foreach(EXT ${FONT_EXTENSIONS})
+      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
+    endforeach()
+    string(APPEND MASTER_FONT_CONTENT "#include \"${OUTPUT_REL}\"\n")
+    string(APPEND FONT_LOOKUP_CONTENT "  if (strcmp(path, \"${REL_PATH}\") == 0) { FontData d = {${VAR_NAME}, ${VAR_NAME}_len}; return d; }\n")
+  endforeach()
+
+  string(APPEND MASTER_FONT_CONTENT "#endif\n")
+  string(APPEND FONT_LOOKUP_CONTENT "  return empty;\n}\n#endif\n")
+  file(WRITE "${MASTER_FONT_HEADER}" "${MASTER_FONT_CONTENT}")
+  file(WRITE "${FONT_LOOKUP_HEADER}" "${FONT_LOOKUP_CONTENT}")
+
+  add_custom_target(randerer_fonts DEPENDS ${GENERATED_FONT_HEADERS})
+  add_dependencies(randerer randerer_fonts)
+  target_include_directories(randerer PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts)
+  target_compile_definitions(randerer PRIVATE EMBED_FONTS)
+else()
+  add_custom_target(copy-font-dir ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${FONT_SEARCH_DIR} ${CMAKE_BINARY_DIR}/fonts)
+endif()

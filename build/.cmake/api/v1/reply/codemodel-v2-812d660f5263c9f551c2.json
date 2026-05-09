@@ -1,0 +1,290 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						9
+					]
+				},
+				{
+					"build" : "2Dframework",
+					"childIndexes" : 
+					[
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-2Dframework-Debug-3d47aa1120c63ff098ae.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "2Dframework",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "2Dframework/randerer",
+					"childIndexes" : 
+					[
+						3,
+						4,
+						5,
+						6
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-2Dframework.randerer-Debug-263853e725c963bd1439.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "2Dframework/randerer",
+					"targetIndexes" : 
+					[
+						2,
+						3,
+						6,
+						7
+					]
+				},
+				{
+					"build" : "2Dframework/randerer/baseLibs/cglm",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-2Dframework.randerer.baseLibs.cglm-Debug-0fc008c60c78cf5eb0de.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 2,
+					"source" : "2Dframework/randerer/baseLibs/cglm",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "2Dframework/randerer/baseLibs/glad",
+					"jsonFile" : "directory-2Dframework.randerer.baseLibs.glad-Debug-5326a908334ba1295d18.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "2Dframework/randerer/baseLibs/glad",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "2Dframework/randerer/baseLibs/stb",
+					"jsonFile" : "directory-2Dframework.randerer.baseLibs.stb-Debug-ac8cddabf2506aa3c01f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "2Dframework/randerer/baseLibs/stb",
+					"targetIndexes" : 
+					[
+						8
+					]
+				},
+				{
+					"build" : "2Dframework/randerer/baseLibs/freeType",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-2Dframework.randerer.baseLibs.freeType-Debug-904d0f1235ed12de3e71.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 3,
+					"source" : "2Dframework/randerer/baseLibs/freeType",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "test",
+					"targetIndexes" : 
+					[
+						9
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2,
+						3
+					],
+					"directoryIndexes" : 
+					[
+						1,
+						2,
+						4,
+						5
+					],
+					"name" : "2Dframework",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "cglm",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "freetype",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "2Dframework::@7f9843ad30790585510b",
+					"jsonFile" : "target-2Dframework-Debug-6958af2ddbc616b7eeb0.json",
+					"name" : "2Dframework",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "cglm::@1839d9cf4128a1ca6eab",
+					"jsonFile" : "target-cglm-Debug-14194ed5bcf3045ece6e.json",
+					"name" : "cglm",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "copy-font-dir::@14940a28d2765df113f2",
+					"jsonFile" : "target-copy-font-dir-Debug-94fddc25139836014322.json",
+					"name" : "copy-font-dir",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "copy-texture-dir::@14940a28d2765df113f2",
+					"jsonFile" : "target-copy-texture-dir-Debug-3f9dc63063082be2604e.json",
+					"name" : "copy-texture-dir",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "freetype::@8546777c5ea1a6f9f9e0",
+					"jsonFile" : "target-freetype-Debug-9486871e6609dc63d4bd.json",
+					"name" : "freetype",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "glad::@cdbd0853602fdf4367d3",
+					"jsonFile" : "target-glad-Debug-4244a4699b25442b3bf6.json",
+					"name" : "glad",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "randerer::@14940a28d2765df113f2",
+					"jsonFile" : "target-randerer-Debug-538d8972c23cc4429883.json",
+					"name" : "randerer",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "randerer_shaders::@14940a28d2765df113f2",
+					"jsonFile" : "target-randerer_shaders-Debug-437ac5888b1604058592.json",
+					"name" : "randerer_shaders",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "stb::@f596c0be548e4441dd4d",
+					"jsonFile" : "target-stb-Debug-08f957713f96f3463368.json",
+					"name" : "stb",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test-Debug-d677300be89a8e09ce27.json",
+					"name" : "test",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/sagiv/Documents/cFinalProject/build",
+		"source" : "/home/sagiv/Documents/cFinalProject"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 8
+	}
+}
