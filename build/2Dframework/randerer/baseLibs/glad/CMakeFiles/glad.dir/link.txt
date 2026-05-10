@@ -1,2 +1,0 @@
-/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/ar qc libglad.a CMakeFiles/glad.dir/src/glad.c.o
-/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/ranlib libglad.a

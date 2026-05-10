@@ -1,2 +1,0 @@
-/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/ar qc lib2Dframework.a CMakeFiles/2Dframework.dir/src/background.c.o CMakeFiles/2Dframework.dir/src/gameObject.c.o CMakeFiles/2Dframework.dir/src/ground.c.o CMakeFiles/2Dframework.dir/src/entity.c.o CMakeFiles/2Dframework.dir/src/player.c.o
-/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/ranlib lib2Dframework.a

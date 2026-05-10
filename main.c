@@ -1,4 +1,3 @@
-#include "2Dframework/entity.h"
 #include <2Dframework/2Dframework.h>
 
 int main() {

@@ -22,3 +22,7 @@ Player createPlayer(const char* image, int colorType, float maxVelocity, float a
 
   return player;
 }
+
+void playerDelete(Player* player) {
+  entityDelete(&player->entity);
+}
