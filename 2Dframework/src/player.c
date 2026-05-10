@@ -15,6 +15,10 @@ Player createPlayer(const char* image, int colorType, float maxVelocity, float a
   player.entity.model.modelColumnCount = TOTAL_ANIM_SIZE;
   player.entity.model.currModel = 1;
   player.entity.model.currModelColumn = STAND_ANIM;
+  player.entity.maxVelocity = maxVelocity;
+  player.entity.accelaration = accelaration;
+  player.entity.currHoriVelocity = 0.0f;
+  player.entity.currVertVelocity = 0.0f;
 
   player.entity.obj = createGameObject(image, colorType, createEntityMesh(player.entity.model.modelsize),  xCoord, yCoord, width, height, 0.0f);
   entityUpdateTex(&player.entity);
@@ -25,4 +29,8 @@ Player createPlayer(const char* image, int colorType, float maxVelocity, float a
 
 void playerDelete(Player* player) {
   entityDelete(&player->entity);
+}
+
+void playerDraw(Player* player) {
+  entityDraw(&player->entity);
 }

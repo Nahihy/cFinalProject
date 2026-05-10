@@ -21,7 +21,8 @@ Mesh createEntityMesh(float texCoord[2]) {
   return createMesh(vertices, 16, indices, 6, attrib, 2);
 }
 
-Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ignoreCollision, float xCoord, float yCoord, float width, float height) {
+Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ignoreCollision,
+                    float accelaration, float maxVelocity, float xCoord, float yCoord, float width, float height) {
   if(ignoreCollision != EN_IGNORE_COLLISION && ignoreCollision != EN_USE_COLLISION) {
     printf("Warning: invalid collision value in %s entity. only set to \"EN_USE_COLLISION\" or \"EN_IGNORE_COLLISION\", it has been set to ignore", image);
     ignoreCollision = EN_IGNORE_COLLISION;
@@ -29,11 +30,21 @@ Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ig
   Entity entity;
   entity.ignoreCollision = ignoreCollision;
   entity.model = *model;
+  entity.accelaration = accelaration;
+  entity.maxVelocity = maxVelocity;
+  entity.currHoriVelocity = 0.0f;
+  entity.currVertVelocity = 0.0f;
   entity.obj = createGameObject(image, colorType, createEntityMesh(entity.model.modelsize),  xCoord, yCoord, width, height, 0.0f);
   entityUpdateTex(&entity);
   return entity;
 }
 
+void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement) {
+  entity->currHoriVelocity += entity->accelaration * horiMovement;
+  if(!horiMovement) entity->currHoriVelocity -= entity->accelaration / 2.0f;
+  if(entity->currHoriVelocity > entity->maxVelocity) entity->currHoriVelocity -= entity->currHoriVelocity;
+  gameObjectMove(&entity->obj, entity->obj.xCoord + entity->currHoriVelocity, 0);
+}
 
 void entityDelete(Entity* entity) {
   gameObjectDelete(&entity->obj);

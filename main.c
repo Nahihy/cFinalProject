@@ -9,8 +9,8 @@ int main() {
   Background bg = createBackground("purpleMountsBackground.jpg", GL_RGB, 0.0f, 1.0f, 1.0f, 0.0f, BG_REPEAT);
 
 
-  Player player = createPlayer("mario.png", GL_RGBA, 0.5f, 0.01f, (float[2]){0.3333f, 0.3333f}, (TexColumn){0, 1, EN_REPEAT},
-                               (TexColumn){1, 3, EN_REPEAT}, (TexColumn){2, 1, EN_REPEAT}, 0.0f, 0.0f, 0.5f, 0.5f);
+  Player player = createPlayer("mario.png", GL_RGBA, 0.005f, 0.0001f, (float[2]){0.3333f, 0.3333f},
+                               (TexColumn){0, 1, EN_REPEAT}, (TexColumn){1, 3, EN_REPEAT}, (TexColumn){2, 1, EN_REPEAT}, 0.0f, 0.0f, 0.5f, 0.5f);
   entityChangeTexColumn(&player.entity, 1);
   entityNextTex(&player.entity);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -21,7 +21,10 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
     backgroundDraw(&bg);
 
+    float deltaTime = randererGetDeltaTime(&randerer);
+
     entityDraw(&player.entity);
+    entityUpdateMovement(&player.entity, 0.0000001f * deltaTime, 0.0f);
 
     randererSwapBuffers(&randerer);
   }
