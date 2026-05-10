@@ -1,3 +1,4 @@
+#include "2Dframework/entity.h"
 #include <2Dframework/2Dframework.h>
 
 int main() {
@@ -23,13 +24,13 @@ int main() {
 
     float deltaTime = randererGetDeltaTime(&randerer);
 
-    entityDraw(&player.entity);
+    playerDraw(&player);
     entityUpdateMovement(&player.entity, 0.0000001f * deltaTime, 0.0f);
-
+    entityNextTex(&player.entity);
     randererSwapBuffers(&randerer);
   }
 
-  entityDelete(&player.entity);
+    playerDelete(&player);
   randererClose(&randerer);
 
 }

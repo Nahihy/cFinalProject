@@ -8,8 +8,6 @@
 
 typedef struct {
   Entity entity;
-  float maxVelocity;
-  float accelaration;
   TexColumn animations[TOTAL_ANIM_SIZE];
 } Player;
 
