@@ -3,8 +3,6 @@
 Player createPlayer(const char* image, int colorType, float maxVelocity, float accelaration, float modelSize[2],
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height) {
   Player player;
-  player.maxVelocity = maxVelocity;
-  player.accelaration = accelaration;
   player.animations[STAND_ANIM] = standAnim;
   player.animations[WALK_ANIM] = walkAnim;
   player.animations[JUMP_ANIM] = jumpAnim;
@@ -33,4 +31,8 @@ void playerDelete(Player* player) {
 
 void playerDraw(Player* player) {
   entityDraw(&player->entity);
+}
+
+void playerGetUserMovement(Player* player) {
+
 }
