@@ -224,11 +224,11 @@ clean: 2Dframework/clean
 # Target rules for target CMakeFiles/test.dir
 
 # All Build rule for target.
-CMakeFiles/test.dir/all: 2Dframework/CMakeFiles/2Dframework.dir/all
 CMakeFiles/test.dir/all: 2Dframework/randerer/CMakeFiles/randerer.dir/all
+CMakeFiles/test.dir/all: 2Dframework/CMakeFiles/2Dframework.dir/all
+CMakeFiles/test.dir/all: 2Dframework/randerer/baseLibs/cglm/CMakeFiles/cglm.dir/all
 CMakeFiles/test.dir/all: 2Dframework/randerer/baseLibs/stb/CMakeFiles/stb.dir/all
 CMakeFiles/test.dir/all: 2Dframework/randerer/baseLibs/freeType/CMakeFiles/freetype.dir/all
-CMakeFiles/test.dir/all: 2Dframework/randerer/baseLibs/cglm/CMakeFiles/cglm.dir/all
 CMakeFiles/test.dir/all: 2Dframework/randerer/baseLibs/glad/CMakeFiles/glad.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
@@ -262,9 +262,9 @@ CMakeFiles/test.dir/clean:
 
 # All Build rule for target.
 2Dframework/CMakeFiles/2Dframework.dir/all: 2Dframework/randerer/CMakeFiles/randerer.dir/all
+2Dframework/CMakeFiles/2Dframework.dir/all: 2Dframework/randerer/baseLibs/cglm/CMakeFiles/cglm.dir/all
 2Dframework/CMakeFiles/2Dframework.dir/all: 2Dframework/randerer/baseLibs/stb/CMakeFiles/stb.dir/all
 2Dframework/CMakeFiles/2Dframework.dir/all: 2Dframework/randerer/baseLibs/freeType/CMakeFiles/freetype.dir/all
-2Dframework/CMakeFiles/2Dframework.dir/all: 2Dframework/randerer/baseLibs/cglm/CMakeFiles/cglm.dir/all
 2Dframework/CMakeFiles/2Dframework.dir/all: 2Dframework/randerer/baseLibs/glad/CMakeFiles/glad.dir/all
 	$(MAKE) $(MAKESILENT) -f 2Dframework/CMakeFiles/2Dframework.dir/build.make 2Dframework/CMakeFiles/2Dframework.dir/depend
 	$(MAKE) $(MAKESILENT) -f 2Dframework/CMakeFiles/2Dframework.dir/build.make 2Dframework/CMakeFiles/2Dframework.dir/build
@@ -298,9 +298,9 @@ CMakeFiles/test.dir/clean:
 
 # All Build rule for target.
 2Dframework/randerer/CMakeFiles/randerer.dir/all: 2Dframework/randerer/CMakeFiles/randerer_shaders.dir/all
+2Dframework/randerer/CMakeFiles/randerer.dir/all: 2Dframework/randerer/baseLibs/cglm/CMakeFiles/cglm.dir/all
 2Dframework/randerer/CMakeFiles/randerer.dir/all: 2Dframework/randerer/baseLibs/stb/CMakeFiles/stb.dir/all
 2Dframework/randerer/CMakeFiles/randerer.dir/all: 2Dframework/randerer/baseLibs/freeType/CMakeFiles/freetype.dir/all
-2Dframework/randerer/CMakeFiles/randerer.dir/all: 2Dframework/randerer/baseLibs/cglm/CMakeFiles/cglm.dir/all
 2Dframework/randerer/CMakeFiles/randerer.dir/all: 2Dframework/randerer/baseLibs/glad/CMakeFiles/glad.dir/all
 	$(MAKE) $(MAKESILENT) -f 2Dframework/randerer/CMakeFiles/randerer.dir/build.make 2Dframework/randerer/CMakeFiles/randerer.dir/depend
 	$(MAKE) $(MAKESILENT) -f 2Dframework/randerer/CMakeFiles/randerer.dir/build.make 2Dframework/randerer/CMakeFiles/randerer.dir/build

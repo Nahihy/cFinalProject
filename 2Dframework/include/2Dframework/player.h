@@ -1,8 +1,10 @@
 #include <2Dframework/entity.h>
 
-#define WALK_ANIM 0
-#define JUMP_ANIM 1
-#define TOTAL_ANIM_SIZE 2
+#define STAND_ANIM 0
+#define WALK_ANIM 1
+#define JUMP_ANIM 2
+#define TOTAL_ANIM_SIZE 3
+
 
 typedef struct {
   Entity entity;
@@ -12,5 +14,6 @@ typedef struct {
 } Player;
 
 
-Player createPlayer(const char* image, int colorType, float maxVelocity, float accelaration, float modelSize[2], TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height);
+Player createPlayer(const char* image, int colorType, float maxVelocity, float accelaration, float modelSize[2],
+                    TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height);
 

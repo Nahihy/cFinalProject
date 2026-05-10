@@ -1,6 +1,7 @@
 2Dframework/CMakeFiles/2Dframework.dir/src/entity.c.o: \
  /home/sagiv/Documents/cFinalProject/2Dframework/src/entity.c \
  /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/stdc-predef.h \
+ /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/entity.h \
  /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/gameObject.h \
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/include/randerer/randerer.h \
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/glad/include/glad/glad.h \
@@ -196,5 +197,4 @@
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/freeType/include/freetype/ftimage.h \
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/freeType/include/freetype/fterrors.h \
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/freeType/include/freetype/ftmoderr.h \
- /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/freeType/include/freetype/fterrdef.h \
- /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/entity.h
+ /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/freeType/include/freetype/fterrdef.h

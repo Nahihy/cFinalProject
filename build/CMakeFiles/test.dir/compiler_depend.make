@@ -6,6 +6,7 @@ CMakeFiles/test.dir/main.c.o: /home/sagiv/Documents/cFinalProject/main.c \
   /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/background.h \
   /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/entity.h \
   /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/gameObject.h \
+  /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/player.h \
   /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/aabb2d.h \
   /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine-mat.h \
   /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine-post.h \
@@ -259,8 +260,6 @@ CMakeFiles/test.dir/main.c.o:
 
 2Dframework/lib2Dframework.a:
 
-/nix/store/qwq97znps5chnmz6sgxbwkxijk013g63-libxi-1.8.2/lib/libXi.so.6:
-
 /nix/store/qi7spcan9lv78ag41bsmjrrhqrw496kq-libx11-1.8.13/lib/libX11-xcb.so.1:
 
 /nix/store/lvwga6ivl1d4lnw0zis9ajs0rqx9gp4i-gcc-15.2.0/lib/gcc/x86_64-unknown-linux-gnu/15.2.0/crtendS.o:
@@ -381,7 +380,7 @@ CMakeFiles/test.dir/main.c.o:
 
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/stdlib.h:
 
-/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/vec2-ext.h:
+/nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/stdlib-bsearch.h:
 
 /home/sagiv/Documents/cFinalProject/main.c:
 
@@ -409,6 +408,10 @@ CMakeFiles/test.dir/main.c.o:
 
 /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/mat4x3.h:
 
+/nix/store/qwq97znps5chnmz6sgxbwkxijk013g63-libxi-1.8.2/lib/libXi.so.6:
+
+/home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/player.h:
+
 /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/sphere.h:
 
 /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/simd/sse2/mat4.h:
@@ -431,11 +434,11 @@ CMakeFiles/test.dir/main.c.o:
 
 /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/ivec2.h:
 
+/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/vec2-ext.h:
+
+/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/ease.h:
+
 /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/mat2x4.h:
-
-/nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/byteswap.h:
-
-/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/simd/sse2/mat2.h:
 
 /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine.h:
 
@@ -467,10 +470,6 @@ CMakeFiles/test.dir/main.c.o:
 
 /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine-pre.h:
 
-/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/box.h:
-
-/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine-post.h:
-
 /nix/store/jms7zxzm7w1whczwny5m3gkgdjghmi2r-glibc-2.42-51/lib/crti.o:
 
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/long-double.h:
@@ -478,6 +477,14 @@ CMakeFiles/test.dir/main.c.o:
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/time64.h:
 
 /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/background.h:
+
+/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine-post.h:
+
+/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/box.h:
+
+/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/simd/sse2/mat2.h:
+
+/nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/byteswap.h:
 
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/types/struct_FILE.h:
 
@@ -534,8 +541,6 @@ CMakeFiles/test.dir/main.c.o:
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/math-vector.h:
 
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/mathcalls-narrow.h:
-
-/home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/ease.h:
 
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/floatn.h:
 
@@ -696,8 +701,6 @@ CMakeFiles/test.dir/main.c.o:
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/mathcalls-macros.h:
 
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/pthread_stack_min.h:
-
-/nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/stdlib-bsearch.h:
 
 /nix/store/h0ip0h6qp7kc2wm7mwjaglkxxbzmjri4-glibc-2.42-51-dev/include/bits/pthreadtypes-arch.h:
 

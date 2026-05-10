@@ -7,6 +7,7 @@ CMakeFiles/test.dir/main.c.o
  /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/background.h
  /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/entity.h
  /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/gameObject.h
+ /home/sagiv/Documents/cFinalProject/2Dframework/include/2Dframework/player.h
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/aabb2d.h
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine-mat.h
  /home/sagiv/Documents/cFinalProject/2Dframework/randerer/baseLibs/cglm/include/cglm/affine-post.h
