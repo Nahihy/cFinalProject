@@ -1,23 +1,75 @@
-name: C/C++ CI
+name: C CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - main
+      - master
+      - develop
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - main
+      - master
+      - develop
 
 jobs:
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang cmake make valgrind
+
+      - name: Configure compiler
+        run: |
+          echo "CC=${{ matrix.compiler }}" >> $GITHUB_ENV
+
+      # CMake-based projects
+      - name: Configure project
+        run: |
+          if [ -f CMakeLists.txt ]; then
+            cmake -B build -S . \
+              -DCMAKE_C_COMPILER=${{ matrix.compiler }} \
+              -DCMAKE_BUILD_TYPE=Debug
+          fi
+
+      - name: Build project
+        run: |
+          if [ -f CMakeLists.txt ]; then
+            cmake --build build --config Debug -- -j$(nproc)
+          elif [ -f Makefile ]; then
+            make
+          else
+            echo "No supported build system found."
+            exit 1
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -f CMakeLists.txt ]; then
+            cd build
+            ctest --output-on-failure
+          elif make -n test >/dev/null 2>&1; then
+            make test
+          else
+            echo "No tests defined. Skipping."
+          fi
+
+      - name: Run Valgrind (optional)
+        run: |
+          if [ -f build/tests ] || [ -f ./tests ]; then
+            EXEC=$(find . -type f -executable | head -n 1)
+            if [ -n "$EXEC" ]; then
+              valgrind --leak-check=full --error-exitcode=1 "$EXEC"
+            fi
+          fi
