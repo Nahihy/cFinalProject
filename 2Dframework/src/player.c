@@ -33,6 +33,13 @@ void playerDraw(Player* player) {
   entityDraw(&player->entity);
 }
 
-void playerGetUserMovement(Player* player) {
-
+void playerGetUserMovement(Player* player, Randerer* randerer) {
+  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_W) == GLFW_PRESS)
+    entityUpdateMovement(&player->entity, 0.0f, 1.0f);
+  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_S) == GLFW_PRESS)
+    entityUpdateMovement(&player->entity, 0.0f, -1.0f);
+  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_D) == GLFW_PRESS)
+    entityUpdateMovement(&player->entity, 1.0f, 0.0f);
+  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_A) == GLFW_PRESS)
+    entityUpdateMovement(&player->entity, -1.0f, 0.0f);
 }

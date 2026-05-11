@@ -16,4 +16,5 @@ Player createPlayer(const char* image, int colorType, float maxVelocity, float a
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height);
 void playerDelete(Player* player);
 void playerDraw(Player* player);
-void playerGetUserMovement(Player* player);
+void playerGetUserMovement(Player* player, Randerer* randerer);
+

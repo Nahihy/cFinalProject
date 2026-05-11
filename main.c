@@ -22,10 +22,8 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
     backgroundDraw(&bg);
 
-    float deltaTime = randererGetDeltaTime(&randerer);
-
     playerDraw(&player);
-    entityUpdateMovement(&player.entity, 0.0000001f * deltaTime, 0.0f);
+    playerGetUserMovement(&player, &randerer);
     entityNextTex(&player.entity);
     randererSwapBuffers(&randerer);
   }
