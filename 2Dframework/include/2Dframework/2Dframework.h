@@ -4,3 +4,4 @@
 #include <2Dframework/background.h>
 #include <2Dframework/gameObject.h>
 #include <2Dframework/entity.h>
+#include <2Dframework/player.h>

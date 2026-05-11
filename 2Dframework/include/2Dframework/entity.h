@@ -24,16 +24,21 @@ typedef struct {
   GameObject obj;
   int ignoreCollision;
   ModelAttrib model;
+  float maxVelocity;
+  float accelaration;
+  float currHoriVelocity;
+  float currVertVelocity;
 } Entity;
 
 
 
-Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ignoreCollision, float xCoord, float yCoord, float width, float height);
+Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ignoreCollision,
+                    float accelaration, float maxVelocity, float xCoord, float yCoord, float width, float height);
 void entityDelete(Entity* entity);
 void entityDraw(Entity* entity);
-void entityMove(Entity* entity, float horizontal, float vertical);
 void entityResize(Entity* entity, float horizontal, float vertical);
 void entityChangeTexColumn(Entity* entity, int column);
 void entityNextTex(Entity* entity);
 void entityUpdateTex(Entity* entity);
+void entityUpdateMovement(Entity* entity, float isMovedHori, float isMovedVert);
 Mesh createEntityMesh(float texCoord[2]);

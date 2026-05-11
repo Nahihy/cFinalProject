@@ -4,6 +4,7 @@
 
 Randerer randererInit(const char *windowTitle, int windowDimensions[2]) {
   Randerer randerer;
+  randerer.lastFrame = 0.0f;
 
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
