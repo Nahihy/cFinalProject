@@ -9,10 +9,12 @@
 typedef struct {
   Entity entity;
   TexColumn animations[TOTAL_ANIM_SIZE];
+  int animationDelay;
+  int delayToNextTex;
 } Player;
 
 
-Player createPlayer(const char* image, int colorType, float maxVelocity, float accelaration, float modelSize[2],
+Player createPlayer(const char* image, int colorType, int animationDelay, float maxVelocity, float accelaration, float modelSize[2],
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height);
 void playerDelete(Player* player);
 void playerDraw(Player* player);

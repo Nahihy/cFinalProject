@@ -1,11 +1,15 @@
+#include "2Dframework/entity.h"
 #include <2Dframework/player.h>
+#include <GLFW/glfw3.h>
 
-Player createPlayer(const char* image, int colorType, float maxVelocity, float accelaration, float modelSize[2],
+Player createPlayer(const char* image, int colorType, int animationDelay, float maxVelocity, float accelaration, float modelSize[2],
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height) {
   Player player;
   player.animations[STAND_ANIM] = standAnim;
   player.animations[WALK_ANIM] = walkAnim;
   player.animations[JUMP_ANIM] = jumpAnim;
+  player.animationDelay = animationDelay;
+  player.delayToNextTex = animationDelay;
   player.entity.ignoreCollision = EN_USE_COLLISION;
   player.entity.model.modelsize[0] = modelSize[0];
   player.entity.model.modelsize[1] = modelSize[1];
@@ -34,12 +38,29 @@ void playerDraw(Player* player) {
 }
 
 void playerGetUserMovement(Player* player, Randerer* randerer) {
-  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_W) == GLFW_PRESS)
+  int wPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_W) == GLFW_PRESS;
+  int sPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_S) == GLFW_PRESS;
+  int dPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_D) == GLFW_PRESS;
+  int aPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_A) == GLFW_PRESS;
+  
+  if(!wPressed && !sPressed && !dPressed && !aPressed) {
+    entityChangeTexColumn(&player->entity, STAND_ANIM);
+    return;
+  }
+  entityChangeTexColumn(&player->entity, WALK_ANIM);
+  if(player->delayToNextTex <= 0) entityNextTex(&player->entity);
+  else player->delayToNextTex--;
+
+  if(wPressed) {
     entityUpdateMovement(&player->entity, 0.0f, 1.0f);
-  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_S) == GLFW_PRESS)
+  }
+  if(sPressed) {
     entityUpdateMovement(&player->entity, 0.0f, -1.0f);
-  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_D) == GLFW_PRESS)
+  }
+  if(dPressed) {
     entityUpdateMovement(&player->entity, 1.0f, 0.0f);
-  if(glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_A) == GLFW_PRESS)
+  }
+  if(aPressed) {
     entityUpdateMovement(&player->entity, -1.0f, 0.0f);
+  }
 }

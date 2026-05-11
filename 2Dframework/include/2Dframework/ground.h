@@ -3,6 +3,16 @@
 
 
 typedef struct {
-  GameObject obj;
-
+  GameObject* objArray;
+  int objCount;
+  int maxCount;
 } Ground;
+
+
+Ground createGround(int initialCount);
+void groundAdd(Ground* ground, const char* image, int colorType, Mesh mesh, float xCoord, float yCoord, float width, float height, float rotation);
+void groundEnlarge(Ground* ground, int amount);
+void groundDeleteInSlot(Ground* ground, int slot);
+void groundDelete(Ground* ground);
+void groundAddToSlot(Ground* ground, int slot);
+void groundDraw(Ground* ground);

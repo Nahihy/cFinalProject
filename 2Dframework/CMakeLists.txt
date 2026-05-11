@@ -11,6 +11,7 @@ add_library(2Dframework STATIC
   src/ground.c
   src/entity.c
   src/player.c
+  src/ground.c
 )
 
 target_include_directories(2Dframework PUBLIC include)

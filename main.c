@@ -1,4 +1,3 @@
-#include "2Dframework/entity.h"
 #include <2Dframework/2Dframework.h>
 
 int main() {
@@ -9,11 +8,14 @@ int main() {
 
   Background bg = createBackground("purpleMountsBackground.jpg", GL_RGB, 0.0f, 1.0f, 1.0f, 0.0f, BG_REPEAT);
 
+  Ground ground = createGround(1);
 
-  Player player = createPlayer("mario.png", GL_RGBA, 0.005f, 0.0001f, (float[2]){0.3333f, 0.3333f},
-                               (TexColumn){0, 1, EN_REPEAT}, (TexColumn){1, 3, EN_REPEAT}, (TexColumn){2, 1, EN_REPEAT}, 0.0f, 0.0f, 0.5f, 0.5f);
-  entityChangeTexColumn(&player.entity, 1);
-  entityNextTex(&player.entity);
+  groundAdd(&ground, "container.jpg", GL_RGB, GO_SQUARE, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f);
+  groundAdd(&ground, "awesomeface.png", GL_RGBA, GO_SQUARE, 0.5f, 0.5f, 0.5f, 0.5f, 45.0f);
+
+
+  Player player = createPlayer("mario.png", GL_RGBA, 5, 0.005f, 0.0001f, (float[2]){0.3333f, 0.3333f}, (TexColumn){0, 1, EN_REPEAT},
+                               (TexColumn){1, 3, EN_REPEAT}, (TexColumn){2, 1, EN_REPEAT}, 0.0f, 0.0f, 0.5f, 0.5f);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
 
@@ -22,13 +24,14 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
     backgroundDraw(&bg);
 
+    groundDraw(&ground);
+
     playerDraw(&player);
     playerGetUserMovement(&player, &randerer);
-    entityNextTex(&player.entity);
     randererSwapBuffers(&randerer);
   }
-
-    playerDelete(&player);
+  groundDelete(&ground);
+  playerDelete(&player);
   randererClose(&randerer);
 
 }
