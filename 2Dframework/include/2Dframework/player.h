@@ -1,4 +1,5 @@
 #include <2Dframework/entity.h>
+#include <2Dframework/ground.h>
 
 #define STAND_ANIM 0
 #define WALK_ANIM 1
@@ -18,5 +19,5 @@ Player createPlayer(const char* image, int colorType, int animationDelay, float 
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height);
 void playerDelete(Player* player);
 void playerDraw(Player* player);
-void playerGetUserMovement(Player* player, Randerer* randerer);
+void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground);
 

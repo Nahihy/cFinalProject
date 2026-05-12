@@ -38,3 +38,10 @@ void groundDraw(Ground* ground) {
   for(int i = 0; i < ground->objCount; i++)
     gameObjectDraw(&ground->objArray[i]);
 }
+
+int groundCheckCollision(Ground* ground, GameObject* object) {
+  for(int i = 0; i < ground->objCount; i++)
+    if(gameObjectCheckCollision(&ground->objArray[i], object)) return 1;
+  return 0;
+}
+

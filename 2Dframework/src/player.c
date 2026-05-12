@@ -1,4 +1,5 @@
 #include "2Dframework/entity.h"
+#include "2Dframework/ground.h"
 #include <2Dframework/player.h>
 #include <GLFW/glfw3.h>
 
@@ -37,12 +38,14 @@ void playerDraw(Player* player) {
   entityDraw(&player->entity);
 }
 
-void playerGetUserMovement(Player* player, Randerer* randerer) {
+void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground) {
   int wPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_W) == GLFW_PRESS;
   int sPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_S) == GLFW_PRESS;
   int dPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_D) == GLFW_PRESS;
   int aPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_A) == GLFW_PRESS;
   
+  entityUpdateMovement(&player->entity, 0.0f, 0.0f);
+
   if(!wPressed && !sPressed && !dPressed && !aPressed) {
     entityChangeTexColumn(&player->entity, STAND_ANIM);
     player->delayToNextTex = player->animationDelay;
@@ -54,14 +57,18 @@ void playerGetUserMovement(Player* player, Randerer* randerer) {
 
   if(wPressed) {
     entityUpdateMovement(&player->entity, 0.0f, 1.0f);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, -1.0f);
   }
   if(sPressed) {
     entityUpdateMovement(&player->entity, 0.0f, -1.0f);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, 1.0f);
   }
   if(dPressed) {
     entityUpdateMovement(&player->entity, 1.0f, 0.0f);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, -1.0f, 0.0f);
   }
   if(aPressed) {
     entityUpdateMovement(&player->entity, -1.0f, 0.0f);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 1.0f, 0.0f);
   }
 }
