@@ -45,6 +45,7 @@ void playerGetUserMovement(Player* player, Randerer* randerer) {
   
   if(!wPressed && !sPressed && !dPressed && !aPressed) {
     entityChangeTexColumn(&player->entity, STAND_ANIM);
+    player->delayToNextTex = player->animationDelay;
     return;
   }
   entityChangeTexColumn(&player->entity, WALK_ANIM);
