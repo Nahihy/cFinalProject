@@ -45,7 +45,7 @@ void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement
   else if(!horiMovement && entity->currHoriVelocity > 0.0f) entity->currHoriVelocity -= entity->accelaration / 2.0f;
   if(entity->currHoriVelocity > entity->maxVelocity) entity->currHoriVelocity -= entity->currHoriVelocity;
   else if(entity->currHoriVelocity < -entity->maxVelocity) entity->currHoriVelocity += entity->currHoriVelocity;
-  gameObjectMove(&entity->obj, entity->obj.xCoord + entity->currHoriVelocity, 0);
+  gameObjectMove(&entity->obj, entity->currHoriVelocity, 0);
 }
 
 void entityDelete(Entity* entity) {
