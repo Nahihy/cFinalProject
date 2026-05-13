@@ -1,4 +1,3 @@
-#include "2Dframework/ground.h"
 #include <2Dframework/2Dframework.h>
 
 int main() {
@@ -28,7 +27,6 @@ int main() {
     groundDraw(&ground);
 
     playerDraw(&player);
-    printf("%d", groundCheckCollision(&ground, &player.entity.obj));
     playerGetUserMovement(&player, &randerer, &ground);
     randererSwapBuffers(&randerer);
   }

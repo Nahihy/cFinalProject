@@ -41,7 +41,8 @@ Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ig
 
 void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement) {
   entity->currHoriVelocity += entity->accelaration * horiMovement;
-  if(!horiMovement && entity->currHoriVelocity != 0.0f) entity->currHoriVelocity -= entity->accelaration / 2.0f;
+  if(!horiMovement && entity->currHoriVelocity < 0.0f) entity->currHoriVelocity += entity->accelaration / 2.0f;
+  else if(!horiMovement && entity->currHoriVelocity > 0.0f) entity->currHoriVelocity -= entity->accelaration / 2.0f;
   if(entity->currHoriVelocity > entity->maxVelocity) entity->currHoriVelocity -= entity->currHoriVelocity;
   gameObjectMove(&entity->obj, entity->obj.xCoord + entity->currHoriVelocity, 0);
 }
