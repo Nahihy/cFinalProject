@@ -14,7 +14,7 @@ int main() {
   groundAdd(&ground, "awesomeface.png", GL_RGBA, GO_SQUARE, 0.5f, 1.5f, 0.5f, 0.5f, 45.0f);
 
 
-  Player player = createPlayer("mario.png", GL_RGBA, 5, 2.0f, 0.01f, (float[2]){0.3333f, 0.3333f}, (TexColumn){0, 1, EN_REPEAT},
+  Player player = createPlayer("mario.png", GL_RGBA, 5, 6.01f, 0.01f, (float[2]){0.3333f, 0.3333f}, (TexColumn){0, 1, EN_REPEAT},
                                (TexColumn){1, 3, EN_REPEAT}, (TexColumn){2, 1, EN_REPEAT}, 0.0f, 0.0f, 0.5f, 0.5f);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);

@@ -1,5 +1,6 @@
 #pragma once
 #include <2Dframework/gameObject.h>
+#include <2Dframework/ground.h>
 
 #define EN_USE_COLLISION 0
 #define EN_IGNORE_COLLISION 1
@@ -40,5 +41,5 @@ void entityResize(Entity* entity, float horizontal, float vertical);
 void entityChangeTexColumn(Entity* entity, int column);
 void entityNextTex(Entity* entity);
 void entityUpdateTex(Entity* entity);
-void entityUpdateMovement(Entity* entity, float isMovedHori, float isMovedVert);
+void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement, Ground* ground);
 Mesh createEntityMesh(float texCoord[2]);

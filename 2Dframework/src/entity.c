@@ -1,3 +1,4 @@
+#include "2Dframework/ground.h"
 #include <2Dframework/entity.h>
 #include <stdio.h>
 
@@ -39,12 +40,17 @@ Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ig
   return entity;
 }
 
-void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement) {
+void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement, Ground* ground) {
+
   entity->currHoriVelocity += entity->accelaration * horiMovement;
+  if(entity->ignoreCollision == EN_USE_COLLISION && groundCheckCollision(ground, &entity->obj)) entity->currHoriVelocity = 0.0f;
+
   if(!horiMovement && entity->currHoriVelocity < 0.0f) entity->currHoriVelocity += entity->accelaration / 2.0f;
   else if(!horiMovement && entity->currHoriVelocity > 0.0f) entity->currHoriVelocity -= entity->accelaration / 2.0f;
-  if(entity->currHoriVelocity > entity->maxVelocity) entity->currHoriVelocity -= entity->currHoriVelocity;
-  else if(entity->currHoriVelocity < -entity->maxVelocity) entity->currHoriVelocity += entity->currHoriVelocity;
+
+  if(entity->currHoriVelocity > entity->maxVelocity) entity->currHoriVelocity -= entity->accelaration;
+  else if(entity->currHoriVelocity < -entity->maxVelocity) entity->currHoriVelocity += entity->accelaration;
+
   gameObjectMove(&entity->obj, entity->currHoriVelocity, 0);
 }
 

@@ -1,7 +1,4 @@
-#include "2Dframework/entity.h"
-#include "2Dframework/ground.h"
 #include <2Dframework/player.h>
-#include <GLFW/glfw3.h>
 
 Player createPlayer(const char* image, int colorType, int animationDelay, float maxVelocity, float accelaration, float modelSize[2],
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height) {
@@ -44,7 +41,7 @@ void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground) {
   int dPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_D) == GLFW_PRESS;
   int aPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_A) == GLFW_PRESS;
   
-  entityUpdateMovement(&player->entity, 0.0f, 0.0f);
+  entityUpdateMovement(&player->entity, 0.0f, 0.0f, ground);
 
   if(!wPressed && !sPressed && !dPressed && !aPressed) {
     entityChangeTexColumn(&player->entity, STAND_ANIM);
@@ -56,19 +53,19 @@ void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground) {
   else player->delayToNextTex--;
 
   if(wPressed) {
-    entityUpdateMovement(&player->entity, 0.0f, 1.0f);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, -1.0f);
+    entityUpdateMovement(&player->entity, 0.0f, 1.0f, ground);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, -1.0f, ground);
   }
   if(sPressed) {
-    entityUpdateMovement(&player->entity, 0.0f, -1.0f);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, 1.0f);
+    entityUpdateMovement(&player->entity, 0.0f, -1.0f, ground);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, 1.0f, ground);
   }
   if(dPressed) {
-    entityUpdateMovement(&player->entity, 1.0f, 0.0f);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, -1.0f, 0.0f);
+    entityUpdateMovement(&player->entity, 1.0f, 0.0f, ground);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, -1.0f, 0.0f, ground);
   }
   if(aPressed) {
-    entityUpdateMovement(&player->entity, -1.0f, 0.0f);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 1.0f, 0.0f);
+    entityUpdateMovement(&player->entity, -1.0f, 0.0f, ground);
+    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 1.0f, 0.0f, ground);
   }
 }

@@ -1,4 +1,3 @@
-#include "2Dframework/gameObject.h"
 #include <2Dframework/ground.h>
 #include <stdlib.h>
 
