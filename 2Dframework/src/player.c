@@ -48,24 +48,25 @@ void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground) {
     player->delayToNextTex = player->animationDelay;
     return;
   }
-  entityChangeTexColumn(&player->entity, WALK_ANIM);
-  if(player->delayToNextTex <= 0) entityNextTex(&player->entity);
+
+  if(player->entity.model.currModelColumn != WALK_ANIM) entityChangeTexColumn(&player->entity, WALK_ANIM);
+
+  if(player->delayToNextTex <= 0) {
+    entityNextTex(&player->entity);
+    player->delayToNextTex = player->animationDelay;
+  }
   else player->delayToNextTex--;
 
   if(wPressed) {
     entityUpdateMovement(&player->entity, 0.0f, 1.0f, ground);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, -1.0f, ground);
   }
   if(sPressed) {
     entityUpdateMovement(&player->entity, 0.0f, -1.0f, ground);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 0.0f, 1.0f, ground);
   }
   if(dPressed) {
     entityUpdateMovement(&player->entity, 1.0f, 0.0f, ground);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, -1.0f, 0.0f, ground);
   }
   if(aPressed) {
     entityUpdateMovement(&player->entity, -1.0f, 0.0f, ground);
-    if(groundCheckCollision(ground, &player->entity.obj)) entityUpdateMovement(&player->entity, 1.0f, 0.0f, ground);
   }
 }
