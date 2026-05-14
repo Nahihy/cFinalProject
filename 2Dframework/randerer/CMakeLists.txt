@@ -21,26 +21,13 @@ if(NOT DEFINED TEXTURE_EXTENSIONS)
   set(TEXTURE_EXTENSIONS "png;jpg;jpeg" CACHE STRING "Texture file extensions")
 endif()
 
-if(NOT DEFINED EMBED_FONTS)
-  option(EMBED_FONTS "Embed fonts into binary at compile time" OFF)
-endif()
-if(NOT DEFINED FONT_DIR)
-  set(FONT_DIR "fonts" CACHE STRING "Font directory")
-endif()
-if(NOT DEFINED FONT_EXTENSIONS)
-  set(FONT_EXTENSIONS "ttf" CACHE STRING "Texture file extensions")
-endif()
-
-
 add_library(randerer STATIC
   src/camera.c
   src/shader.c
   src/window.c
   src/mesh.c
-  src/font.c
   src/randerer.c
   src/texture.c
-  src/charmap.c
 )
 
 find_package(glfw3 REQUIRED)
@@ -52,15 +39,13 @@ set(CGLM_STATIC ON CACHE BOOL "" FORCE)
 add_subdirectory(baseLibs/cglm)
 add_subdirectory(baseLibs/glad)
 add_subdirectory(baseLibs/stb)
-add_subdirectory(baseLibs/freeType)
 
 target_include_directories(randerer PUBLIC include)
-target_link_libraries(randerer PUBLIC glfw glad stb OpenGL::GL cglm m freetype)
+target_link_libraries(randerer PUBLIC glfw glad stb OpenGL::GL cglm m)
 
 target_compile_definitions(randerer PUBLIC
   SHADER_DIR="shaders"
   TEXTURE_DIR="textures"
-  FONT_DIR="fonts"
 )
 if(IS_ABSOLUTE "${SHADER_DIR}")
   set(SHADER_SEARCH_DIR "${SHADER_DIR}")
@@ -222,83 +207,4 @@ else()
   add_custom_target(copy-texture-dir ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${TEXTURE_SEARCH_DIR} ${CMAKE_BINARY_DIR}/textures)
 endif()
-if(IS_ABSOLUTE "${FONT_DIR}")
-  set(FONT_SEARCH_DIR "${FONT_DIR}")
-else()
-  set(FONT_SEARCH_DIR "${CMAKE_SOURCE_DIR}/${FONT_DIR}")
-endif()
 
-# ---- font embedding ----
-if(EMBED_FONTS)
-
-  set(FONT_FILES "")
-  foreach(EXT ${FONT_EXTENSIONS})
-    file(GLOB_RECURSE TMP "${FONT_SEARCH_DIR}/*.${EXT}")
-    list(APPEND FONT_FILES ${TMP})
-  endforeach()
-  list(GET FONT_EXTENSIONS 0 FIRST_FONT_EXT)
-  set(GENERATED_FONT_HEADERS "")
-
-  foreach(FONT_FILE ${FONT_FILES})
-    file(RELATIVE_PATH REL_PATH "${FONT_SEARCH_DIR}" "${FONT_FILE}")
-    string(REPLACE ".${FIRST_FONT_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
-    foreach(EXT ${FONT_EXTENSIONS})
-      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
-    endforeach()
-    set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts/${OUTPUT_REL}")
-
-    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
-    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
-    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
-    string(TOUPPER "${VAR_NAME}" GUARD)
-    string(PREPEND GUARD "FONT_")
-
-    add_custom_command(
-      OUTPUT "${OUTPUT_FILE}"
-      COMMAND ${CMAKE_COMMAND}
-        -DINPUT_FILE=${FONT_FILE}
-        -DOUTPUT_FILE=${OUTPUT_FILE}
-        -DVAR_NAME=${VAR_NAME}
-        -DGUARD=${GUARD}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/embed_file.cmake
-      DEPENDS "${FONT_FILE}"
-      COMMENT "Embedding font ${REL_PATH}"
-    )
-    list(APPEND GENERATED_FONT_HEADERS "${OUTPUT_FILE}")
-  endforeach()
-
-  set(MASTER_FONT_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts/all_fonts.h")
-  set(MASTER_FONT_CONTENT "#ifndef FONT_ALL_FONTS_H\n#define FONT_ALL_FONTS_H\n")
-  set(FONT_LOOKUP_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts/font_lookup.h")
-  set(FONT_LOOKUP_CONTENT "#ifndef FONT_LOOKUP_H\n#define FONT_LOOKUP_H\n")
-  string(APPEND FONT_LOOKUP_CONTENT "#include \"all_fonts.h\"\n#include <string.h>\n\n")
-  string(APPEND FONT_LOOKUP_CONTENT "typedef struct { const unsigned char* data; unsigned int len; } FontData;\n\n")
-  string(APPEND FONT_LOOKUP_CONTENT "static inline FontData lookupFont(const char* path) {\n")
-  string(APPEND FONT_LOOKUP_CONTENT "  FontData empty = {0, 0};\n")
-
-  foreach(FONT_FILE ${FONT_FILES})
-    file(RELATIVE_PATH REL_PATH "${FONT_SEARCH_DIR}" "${FONT_FILE}")
-    string(REPLACE "/" "_" VAR_NAME "${REL_PATH}")
-    string(REPLACE "." "_" VAR_NAME "${VAR_NAME}")
-    string(REPLACE "-" "_" VAR_NAME "${VAR_NAME}")
-    string(REPLACE ".${FIRST_FONT_EXT}" ".h" OUTPUT_REL "${REL_PATH}")
-    foreach(EXT ${FONT_EXTENSIONS})
-      string(REPLACE ".${EXT}" ".h" OUTPUT_REL "${OUTPUT_REL}")
-    endforeach()
-    string(APPEND MASTER_FONT_CONTENT "#include \"${OUTPUT_REL}\"\n")
-    string(APPEND FONT_LOOKUP_CONTENT "  if (strcmp(path, \"${REL_PATH}\") == 0) { FontData d = {${VAR_NAME}, ${VAR_NAME}_len}; return d; }\n")
-  endforeach()
-
-  string(APPEND MASTER_FONT_CONTENT "#endif\n")
-  string(APPEND FONT_LOOKUP_CONTENT "  return empty;\n}\n#endif\n")
-  file(WRITE "${MASTER_FONT_HEADER}" "${MASTER_FONT_CONTENT}")
-  file(WRITE "${FONT_LOOKUP_HEADER}" "${FONT_LOOKUP_CONTENT}")
-
-  add_custom_target(randerer_fonts DEPENDS ${GENERATED_FONT_HEADERS})
-  add_dependencies(randerer randerer_fonts)
-  target_include_directories(randerer PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts)
-  target_compile_definitions(randerer PRIVATE EMBED_FONTS)
-else()
-  add_custom_target(copy-font-dir ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${FONT_SEARCH_DIR} ${CMAKE_BINARY_DIR}/fonts)
-endif()
