@@ -5,7 +5,6 @@
 #include <randerer/shader.h>
 #include <randerer/window.h>
 #include <randerer/texture.h>
-#include <randerer/font.h>
 
 typedef struct {
   Shader shader;
