@@ -79,15 +79,15 @@ void gameObjectUpdateTex(GameObject* object) {
 
 int gameObjectCheckCollision(GameObject* object1, GameObject* object2) {
 
-  float one_left = object1->xCoord - object1->width / 2;
-  float one_right = object1->xCoord + object1->width / 2;
-  float one_bottom = object1->yCoord - object1->height / 2;
-  float one_top = object1->yCoord + object1->height / 2;
+  float one_left = object1->xCoord - object1->width;
+  float one_right = object1->xCoord + object1->width;
+  float one_bottom = object1->yCoord - object1->height;
+  float one_top = object1->yCoord + object1->height;
   
-  float two_left = object2->xCoord - object2->width / 2;
-  float two_right = object2->xCoord + object2->width / 2;
-  float two_bottom = object2->yCoord - object2->height / 2;
-  float two_top = object2->yCoord + object2->height / 2;
+  float two_left = object2->xCoord - object2->width;
+  float two_right = object2->xCoord + object2->width;
+  float two_bottom = object2->yCoord - object2->height;
+  float two_top = object2->yCoord + object2->height;
   
   return 
     one_right >= two_left && two_right >= one_left &&

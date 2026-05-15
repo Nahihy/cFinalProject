@@ -1,4 +1,3 @@
-#include "2Dframework/entity.h"
 #include <2Dframework/2Dframework.h>
 
 int main() {
@@ -16,7 +15,7 @@ int main() {
 
 
   Player player = createPlayer("mario.png", GL_RGBA, 20, 6.01f, 0.01f, (float[2]){0.3333f, 0.3333f}, (TexColumn){0, 1, EN_REPEAT},
-                               (TexColumn){1, 3, EN_REPEAT}, (TexColumn){2, 1, EN_REPEAT}, 0.0f, 0.0f, 0.15f, 0.15f);
+                               (TexColumn){1, 3, EN_REPEAT}, (TexColumn){2, 1, EN_REPEAT}, 0.0f, 0.0f, 0.2f, 0.2f);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
 
