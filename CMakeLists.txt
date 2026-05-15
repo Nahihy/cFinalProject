@@ -9,11 +9,8 @@ add_executable(test main.c)
 
 set(EMBED_SHADERS  ON  CACHE BOOL "" FORCE)
 set(EMBED_TEXTURES OFF CACHE BOOL "" FORCE)
-set(EMBED_FONTS OFF CACHE BOOL "" FORCE)
 set(TEXTURE_DIR "textures" CACHE STRING "" FORCE)
-set(FONT_DIR "fonts" CACHE STRING "" FORCE)
 set(TEXTURE_EXTENSIONS "png;jpg"   CACHE STRING "" FORCE)
-set(FONT_EXTENSIONS "ttf" CACHE STRING "" FORCE)
 
 add_subdirectory(2Dframework)
 

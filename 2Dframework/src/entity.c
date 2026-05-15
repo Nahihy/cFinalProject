@@ -1,4 +1,3 @@
-#include "2Dframework/ground.h"
 #include <2Dframework/entity.h>
 #include <stdio.h>
 
@@ -35,6 +34,7 @@ Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ig
   entity.maxVelocity = maxVelocity;
   entity.currHoriVelocity = 0.0f;
   entity.currVertVelocity = 0.0f;
+  entity.model.side = RIGHT;
   entity.obj = createGameObject(image, colorType, createEntityMesh(entity.model.modelsize),  xCoord, yCoord, width, height, 0.0f);
   entityUpdateTex(&entity);
   return entity;
@@ -42,16 +42,27 @@ Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ig
 
 void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement, Ground* ground) {
 
-  entity->currHoriVelocity += entity->accelaration * horiMovement;
-  if(entity->ignoreCollision == EN_USE_COLLISION && groundCheckCollision(ground, &entity->obj)) entity->currHoriVelocity = 0.0f;
+  float totalEntityMov = entity->accelaration * horiMovement;
 
-  if(!horiMovement && entity->currHoriVelocity < 0.0f) entity->currHoriVelocity += entity->accelaration / 2.0f;
-  else if(!horiMovement && entity->currHoriVelocity > 0.0f) entity->currHoriVelocity -= entity->accelaration / 2.0f;
+  if (!horiMovement) {
+    if (entity->currHoriVelocity > 0.0f) {
+      totalEntityMov -= entity->accelaration / 2.0f;
+      if (entity->currHoriVelocity + totalEntityMov < 0.0f)
+        totalEntityMov = -entity->currHoriVelocity;
+    } else if (entity->currHoriVelocity < 0.0f) {
+      totalEntityMov += entity->accelaration / 2.0f;
+      if (entity->currHoriVelocity + totalEntityMov > 0.0f)
+        totalEntityMov = -entity->currHoriVelocity;
+    }
+  }
 
-  if(entity->currHoriVelocity > entity->maxVelocity) entity->currHoriVelocity -= entity->accelaration;
-  else if(entity->currHoriVelocity < -entity->maxVelocity) entity->currHoriVelocity += entity->accelaration;
+  if(entity->currHoriVelocity > entity->maxVelocity) totalEntityMov -= entity->accelaration;
+  else if(entity->currHoriVelocity < -entity->maxVelocity) totalEntityMov += entity->accelaration;
 
-  gameObjectMove(&entity->obj, entity->currHoriVelocity, 0);
+  gameObjectMove(&entity->obj, entity->currHoriVelocity + totalEntityMov, 0);
+  if(entity->ignoreCollision == EN_USE_COLLISION && groundCheckCollision(ground, &entity->obj)) 
+    gameObjectMove(&entity->obj, -(entity->currHoriVelocity + totalEntityMov), 0);
+  else entity->currHoriVelocity += totalEntityMov;
 }
 
 void entityDelete(Entity* entity) {
@@ -86,7 +97,20 @@ void entityChangeTexColumn(Entity* entity, int column) {
 }
 
 void entityUpdateTex(Entity* entity) {
-  entity->obj.horiTexOffset = entity->model.currModelColumn * entity->model.modelsize[0];
+  int column = entity->model.modelColumns[entity->model.currModelColumn].column;
+  float width = entity->model.modelsize[0];
+
+  if (entity->model.side == LEFT) {
+    entity->obj.horiTexOffset = -(column + 1) * width;
+  } else {
+    entity->obj.horiTexOffset = column * width;
+  }
+
   entity->obj.vertTexOffset = 1.0f - (entity->model.currModel * entity->model.modelsize[1]);
   gameObjectUpdateTex(&entity->obj);
+}
+
+void entitySwitchToSide(Entity* entity, Direction side) {
+  entity->model.side = side;
+  entityUpdateTex(entity);
 }

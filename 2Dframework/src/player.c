@@ -1,20 +1,22 @@
+#include "2Dframework/entity.h"
 #include <2Dframework/player.h>
 
 Player createPlayer(const char* image, int colorType, int animationDelay, float maxVelocity, float accelaration, float modelSize[2],
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height) {
   Player player;
-  player.animations[STAND_ANIM] = standAnim;
-  player.animations[WALK_ANIM] = walkAnim;
-  player.animations[JUMP_ANIM] = jumpAnim;
   player.animationDelay = animationDelay;
   player.delayToNextTex = animationDelay;
   player.entity.ignoreCollision = EN_USE_COLLISION;
   player.entity.model.modelsize[0] = modelSize[0];
   player.entity.model.modelsize[1] = modelSize[1];
-  player.entity.model.modelColumns = player.animations;
+  player.entity.model.modelColumns = malloc(TOTAL_ANIM_SIZE * sizeof(TexColumn));
+  player.entity.model.modelColumns[STAND_ANIM] = standAnim;
+  player.entity.model.modelColumns[WALK_ANIM] = walkAnim;
+  player.entity.model.modelColumns[JUMP_ANIM] = jumpAnim;
   player.entity.model.modelColumnCount = TOTAL_ANIM_SIZE;
   player.entity.model.currModel = 1;
   player.entity.model.currModelColumn = STAND_ANIM;
+  player.entity.model.side = RIGHT;
   player.entity.maxVelocity = maxVelocity;
   player.entity.accelaration = accelaration;
   player.entity.currHoriVelocity = 0.0f;
@@ -65,8 +67,10 @@ void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground) {
   }
   if(dPressed) {
     entityUpdateMovement(&player->entity, 1.0f, 0.0f, ground);
+    entitySwitchToSide(&player->entity, RIGHT);
   }
   if(aPressed) {
     entityUpdateMovement(&player->entity, -1.0f, 0.0f, ground);
+    entitySwitchToSide(&player->entity, LEFT);
   }
 }

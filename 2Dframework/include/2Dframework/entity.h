@@ -7,6 +7,11 @@
 #define EN_REPEAT 2
 #define EN_MIRROR 3
 
+typedef enum {
+  LEFT = -1,
+  RIGHT = 1
+} Direction;
+
 typedef struct {
   int column;
   int count;
@@ -19,6 +24,7 @@ typedef struct {
   int modelColumnCount;
   int currModelColumn;
   int currModel;
+  Direction side;
 } ModelAttrib;
 
 typedef struct {
@@ -42,4 +48,5 @@ void entityChangeTexColumn(Entity* entity, int column);
 void entityNextTex(Entity* entity);
 void entityUpdateTex(Entity* entity);
 void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement, Ground* ground);
+void entitySwitchToSide(Entity* entity, Direction side);
 Mesh createEntityMesh(float texCoord[2]);

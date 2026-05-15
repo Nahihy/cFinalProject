@@ -22,7 +22,7 @@ GameObject createGameObject(const char* image, int colorType, Mesh mesh, float x
   shaderSetInt(&shader, "tex", 1);
 
   Texture texture = createTexture(GL_TEXTURE1);
-  textureLoad(&texture, image, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST, colorType);
+  textureLoad(&texture, image, GL_MIRRORED_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST, colorType);
   object.sprite = createSprite(&mesh, &shader, &texture);
 
   return object;

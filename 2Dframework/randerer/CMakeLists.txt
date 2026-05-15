@@ -21,26 +21,14 @@ if(NOT DEFINED TEXTURE_EXTENSIONS)
   set(TEXTURE_EXTENSIONS "png;jpg;jpeg" CACHE STRING "Texture file extensions")
 endif()
 
-if(NOT DEFINED EMBED_FONTS)
-  option(EMBED_FONTS "Embed fonts into binary at compile time" OFF)
-endif()
-if(NOT DEFINED FONT_DIR)
-  set(FONT_DIR "fonts" CACHE STRING "Font directory")
-endif()
-if(NOT DEFINED FONT_EXTENSIONS)
-  set(FONT_EXTENSIONS "ttf" CACHE STRING "Texture file extensions")
-endif()
-
 
 add_library(randerer STATIC
   src/camera.c
   src/shader.c
   src/window.c
   src/mesh.c
-  src/font.c
   src/randerer.c
   src/texture.c
-  src/charmap.c
 )
 
 find_package(glfw3 REQUIRED)
@@ -52,10 +40,9 @@ set(CGLM_STATIC ON CACHE BOOL "" FORCE)
 add_subdirectory(baseLibs/cglm)
 add_subdirectory(baseLibs/glad)
 add_subdirectory(baseLibs/stb)
-add_subdirectory(baseLibs/freeType)
 
 target_include_directories(randerer PUBLIC include)
-target_link_libraries(randerer PUBLIC glfw glad stb OpenGL::GL cglm m freetype)
+target_link_libraries(randerer PUBLIC glfw glad stb OpenGL::GL cglm m)
 
 target_compile_definitions(randerer PUBLIC
   SHADER_DIR="shaders"

@@ -7,6 +7,7 @@
 #define TOTAL_ANIM_SIZE 3
 
 
+
 typedef struct {
   Entity entity;
   TexColumn animations[TOTAL_ANIM_SIZE];
