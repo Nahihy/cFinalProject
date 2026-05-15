@@ -1,3 +1,4 @@
+#include "randerer/randerer.h"
 #include <2Dframework/entity.h>
 #include <stdio.h>
 
@@ -35,7 +36,7 @@ Entity createEntity(const char* image, int colorType, ModelAttrib* model, int ig
   entity.currHoriVelocity = 0.0f;
   entity.currVertVelocity = 0.0f;
   entity.model.side = RIGHT;
-  entity.obj = createGameObject(image, colorType, createEntityMesh(entity.model.modelsize),  xCoord, yCoord, width, height, 0.0f);
+  entity.obj = createGameObject(image, colorType, GL_MIRRORED_REPEAT, createEntityMesh(entity.model.modelsize),  xCoord, yCoord, width, height, 0.0f);
   entityUpdateTex(&entity);
   return entity;
 }
@@ -60,8 +61,10 @@ void entityUpdateMovement(Entity* entity, float horiMovement, float vertMovement
   else if(entity->currHoriVelocity < -entity->maxVelocity) totalEntityMov += entity->accelaration;
 
   gameObjectMove(&entity->obj, entity->currHoriVelocity + totalEntityMov, 0);
-  if(entity->ignoreCollision == EN_USE_COLLISION && groundCheckCollision(ground, &entity->obj)) 
+  if(entity->ignoreCollision == EN_USE_COLLISION && groundCheckCollision(ground, &entity->obj)) {
     gameObjectMove(&entity->obj, -(entity->currHoriVelocity + totalEntityMov), 0);
+    entity->currHoriVelocity = 0.0f;
+  }
   else entity->currHoriVelocity += totalEntityMov;
 }
 

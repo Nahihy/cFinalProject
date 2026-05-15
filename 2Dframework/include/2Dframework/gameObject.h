@@ -13,7 +13,7 @@ typedef struct {
   float horiTexOffset, vertTexOffset;
 } GameObject;
 
-GameObject createGameObject(const char* image, int colorType, Mesh mesh, float xCoord, float yCoord, float width, float height, float rotation);
+GameObject createGameObject(const char* image, int colorType, int texWrap, Mesh mesh, float xCoord, float yCoord, float width, float height, float rotation);
 void gameObjectDelete(GameObject* object);
 void gameObjectDraw(GameObject* object);
 void gameObjectMove(GameObject* object, float horizontal, float vertical);

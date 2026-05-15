@@ -65,8 +65,8 @@
         actions.open_file.resize_window = true;
         view = {
           width = {
-              min = 30;
-              max = 35;
+              min = 25;
+              max = 30;
               padding = 1;
           };
           preserve_window_proportions = true;

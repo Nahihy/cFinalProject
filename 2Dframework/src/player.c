@@ -1,4 +1,3 @@
-#include "2Dframework/entity.h"
 #include <2Dframework/player.h>
 
 Player createPlayer(const char* image, int colorType, int animationDelay, float maxVelocity, float accelaration, float modelSize[2],
@@ -22,7 +21,7 @@ Player createPlayer(const char* image, int colorType, int animationDelay, float 
   player.entity.currHoriVelocity = 0.0f;
   player.entity.currVertVelocity = 0.0f;
 
-  player.entity.obj = createGameObject(image, colorType, createEntityMesh(player.entity.model.modelsize),  xCoord, yCoord, width, height, 0.0f);
+  player.entity.obj = createGameObject(image, colorType, GL_MIRRORED_REPEAT, createEntityMesh(player.entity.model.modelsize),  xCoord, yCoord, width, height, 0.0f);
   entityUpdateTex(&player.entity);
 
 

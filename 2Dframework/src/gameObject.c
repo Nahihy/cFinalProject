@@ -1,6 +1,6 @@
 #include <2Dframework/gameObject.h>
 
-GameObject createGameObject(const char* image, int colorType, Mesh mesh, float xCoord, float yCoord, float width, float height, float rotation) {
+GameObject createGameObject(const char* image, int colorType, int texWrap, Mesh mesh, float xCoord, float yCoord, float width, float height, float rotation) {
   GameObject object;
 
   object.xCoord = xCoord;
@@ -22,7 +22,7 @@ GameObject createGameObject(const char* image, int colorType, Mesh mesh, float x
   shaderSetInt(&shader, "tex", 1);
 
   Texture texture = createTexture(GL_TEXTURE1);
-  textureLoad(&texture, image, GL_MIRRORED_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST, colorType);
+  textureLoad(&texture, image, texWrap, GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST, colorType);
   object.sprite = createSprite(&mesh, &shader, &texture);
 
   return object;
