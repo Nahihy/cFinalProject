@@ -42,7 +42,7 @@ void playerGetUserMovement(Player* player, Randerer* randerer, World* world) {
   int dPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_D) == GLFW_PRESS;
   int aPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_A) == GLFW_PRESS;
   
-  entityUpdateMovement(&player->entity, 0.0f, 0.0f, &world->ground);
+  entityUpdateMovement(&player->entity, 0.0f, 0.0f, world);
 
   if(!wPressed && !sPressed && !dPressed && !aPressed) {
     entityChangeTexColumn(&player->entity, STAND_ANIM);
@@ -59,17 +59,17 @@ void playerGetUserMovement(Player* player, Randerer* randerer, World* world) {
   else player->delayToNextTex--;
 
   if(wPressed) {
-    entityUpdateMovement(&player->entity, 0.0f, 1.0f, ground);
+    entityUpdateMovement(&player->entity, 0.0f, 1.0f, world);
   }
   if(sPressed) {
-    entityUpdateMovement(&player->entity, 0.0f, -1.0f, ground);
+    entityUpdateMovement(&player->entity, 0.0f, -1.0f, world);
   }
   if(dPressed) {
-    entityUpdateMovement(&player->entity, 1.0f, 0.0f, ground);
+    entityUpdateMovement(&player->entity, 1.0f, 0.0f, world);
     entitySwitchToSide(&player->entity, RIGHT);
   }
   if(aPressed) {
-    entityUpdateMovement(&player->entity, -1.0f, 0.0f, ground);
+    entityUpdateMovement(&player->entity, -1.0f, 0.0f, world);
     entitySwitchToSide(&player->entity, LEFT);
   }
 }
