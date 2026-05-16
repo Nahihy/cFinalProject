@@ -87,7 +87,7 @@ void entityResize(Entity* entity, float horizontal, float vertical) {
 void entityNextTex(Entity* entity) {
   entity->model.currModel++;
   TexColumn* currColumn = &(entity->model.modelColumns[entity->model.currModelColumn]);
-  if(currColumn->count <= entity->model.currModel)
+  if(currColumn->count < entity->model.currModel)
     if(currColumn->actionAtEnd == EN_REPEAT) entity->model.currModel = 1;
     else if(currColumn->actionAtEnd == EN_MIRROR) entity->model.currModel -= 2;
   entityUpdateTex(entity);
