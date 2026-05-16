@@ -1,0 +1,26 @@
+#include <2Dframework/2Dframework.h>
+
+World createWorld(Background bg, int initGroundCount, int gravityLevel[2], float playerSpawn[2]) {
+  World world;
+  world.bg = bg;
+  world.ground = createGround(initGroundCount);
+  world.gravityLevel[0] = gravityLevel[0];
+  world.gravityLevel[1] = gravityLevel[1];
+  world.playerSpawn[0] = playerSpawn[0];
+  world.playerSpawn[1] = playerSpawn[1];
+
+  return world;
+}
+
+void worldDelete(World* world) {
+  backgroundDelete(&world->bg);
+  groundDelete(&world->ground);
+}
+
+
+void worldDraw(World* world) {
+  backgroundDraw(&world->bg);
+  groundDraw(&world->ground);
+} 
+
+

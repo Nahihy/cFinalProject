@@ -1,4 +1,4 @@
-#include <2Dframework/player.h>
+#include <2Dframework/2Dframework.h>
 
 Player createPlayer(const char* image, int colorType, int animationDelay, float maxVelocity, float accelaration, float modelSize[2],
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height) {
@@ -36,13 +36,13 @@ void playerDraw(Player* player) {
   entityDraw(&player->entity);
 }
 
-void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground) {
+void playerGetUserMovement(Player* player, Randerer* randerer, World* world) {
   int wPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_W) == GLFW_PRESS;
   int sPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_S) == GLFW_PRESS;
   int dPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_D) == GLFW_PRESS;
   int aPressed = glfwGetKey(randerer->window.GLFWwindow, GLFW_KEY_A) == GLFW_PRESS;
   
-  entityUpdateMovement(&player->entity, 0.0f, 0.0f, ground);
+  entityUpdateMovement(&player->entity, 0.0f, 0.0f, &world->ground);
 
   if(!wPressed && !sPressed && !dPressed && !aPressed) {
     entityChangeTexColumn(&player->entity, STAND_ANIM);
@@ -72,4 +72,9 @@ void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground) {
     entityUpdateMovement(&player->entity, -1.0f, 0.0f, ground);
     entitySwitchToSide(&player->entity, LEFT);
   }
+}
+
+
+void playerSendPlayerToSpawn(Player* player, World* world) {
+  gameObjectSetLocation(&player->entity.obj, world->playerSpawn[0], world->playerSpawn[1]);
 }

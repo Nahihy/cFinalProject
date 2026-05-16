@@ -24,3 +24,4 @@ void gameObjectMoveTex(GameObject* object, float horizontal, float vertical);
 void gameObjectUpdateTex(GameObject* object);
 void gameObjectUpdate(GameObject* object);
 int gameObjectCheckCollision(GameObject* object1, GameObject* object2);
+void gameObjectSetLocation(GameObject* object, float xCoord, float yCoord);

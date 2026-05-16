@@ -43,6 +43,12 @@ void gameObjectMove(GameObject* object, float horizontal, float vertical) {
   gameObjectUpdate(object);
 }
 
+void gameObjectSetLocation(GameObject* object, float xCoord, float yCoord) {
+  object->xCoord = xCoord;
+  object->yCoord = yCoord;
+  gameObjectUpdate(object);
+}
+
 void gameObjectResize(GameObject* object, float horizontal, float vertical) {
   object->width += horizontal;
   object->height += vertical;

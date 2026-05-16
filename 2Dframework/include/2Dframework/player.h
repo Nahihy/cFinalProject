@@ -1,12 +1,11 @@
+#pragma once
 #include <2Dframework/entity.h>
-#include <2Dframework/ground.h>
+#include <2Dframework/world.h>
 
 #define STAND_ANIM 0
 #define WALK_ANIM 1
 #define JUMP_ANIM 2
 #define TOTAL_ANIM_SIZE 3
-
-
 
 typedef struct {
   Entity entity;
@@ -20,5 +19,5 @@ Player createPlayer(const char* image, int colorType, int animationDelay, float 
                     TexColumn standAnim, TexColumn walkAnim, TexColumn jumpAnim, float xCoord, float yCoord, float width, float height);
 void playerDelete(Player* player);
 void playerDraw(Player* player);
-void playerGetUserMovement(Player* player, Randerer* randerer, Ground* ground);
-
+void playerGetUserMovement(Player* player, Randerer* randerer, World* ground);
+void playerSendPlayerToSpawn(Player* player, World* world);

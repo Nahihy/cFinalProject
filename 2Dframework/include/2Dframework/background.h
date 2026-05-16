@@ -1,3 +1,4 @@
+#pragma once
 #include <randerer/randerer.h>
 
 #define BG_REPEAT GL_REPEAT
